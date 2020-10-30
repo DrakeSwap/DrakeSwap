@@ -1,26 +1,8 @@
-/**
- *Submitted for verification at BscScan.com on 2020-10-15
-*/
 
-pragma solidity =0.6.12;
-
-interface IUniswapV2Factory {
-    event PairCreated(address indexed token0, address indexed token1, address pair, uint);
-
-    function feeTo() external view returns (address);
-    function feeToSetter() external view returns (address);
-
-    function getPair(address tokenA, address tokenB) external view returns (address pair);
-    function allPairs(uint) external view returns (address pair);
-    function allPairsLength() external view returns (uint);
-
-    function createPair(address tokenA, address tokenB) external returns (address pair);
-
-    function setFeeTo(address) external;
-    function setFeeToSetter(address) external;
-}
 
 // File: contracts\uniswapv2\libraries\SafeMath.sol
+
+pragma solidity =0.6.12;
 
 // a library for performing overflow-safe math, courtesy of DappHub (https://github.com/dapphub/ds-math)
 
@@ -39,6 +21,8 @@ library SafeMathUniswap {
 }
 
 // File: contracts\uniswapv2\UniswapV2ERC20.sol
+
+pragma solidity =0.6.12;
 
 
 contract UniswapV2ERC20 {
@@ -133,6 +117,8 @@ contract UniswapV2ERC20 {
 
 // File: contracts\uniswapv2\libraries\Math.sol
 
+pragma solidity =0.6.12;
+
 // a library for performing various math operations
 
 library Math {
@@ -157,6 +143,8 @@ library Math {
 
 // File: contracts\uniswapv2\libraries\UQ112x112.sol
 
+pragma solidity =0.6.12;
+
 // a library for handling binary fixed point numbers (https://en.wikipedia.org/wiki/Q_(number_format))
 
 // range: [0, 2**112 - 1]
@@ -178,6 +166,8 @@ library UQ112x112 {
 
 // File: contracts\uniswapv2\interfaces\IERC20.sol
 
+pragma solidity >=0.5.0;
+
 interface IERC20Uniswap {
     event Approval(address indexed owner, address indexed spender, uint value);
     event Transfer(address indexed from, address indexed to, uint value);
@@ -194,13 +184,43 @@ interface IERC20Uniswap {
     function transferFrom(address from, address to, uint value) external returns (bool);
 }
 
+// File: contracts\uniswapv2\interfaces\IUniswapV2Factory.sol
+
+pragma solidity >=0.5.0;
+
+interface IUniswapV2Factory {
+    event PairCreated(address indexed token0, address indexed token1, address pair, uint);
+
+    function feeTo() external view returns (address);
+    function feeToSetter() external view returns (address);
+
+    function getPair(address tokenA, address tokenB) external view returns (address pair);
+    function allPairs(uint) external view returns (address pair);
+    function allPairsLength() external view returns (uint);
+
+    function createPair(address tokenA, address tokenB) external returns (address pair);
+
+    function setFeeTo(address) external;
+    function setFeeToSetter(address) external;
+}
+
 // File: contracts\uniswapv2\interfaces\IUniswapV2Callee.sol
+
+pragma solidity >=0.5.0;
 
 interface IUniswapV2Callee {
     function uniswapV2Call(address sender, uint amount0, uint amount1, bytes calldata data) external;
 }
 
 // File: contracts\uniswapv2\UniswapV2Pair.sol
+
+pragma solidity =0.6.12;
+
+
+
+
+
+
 
 contract UniswapV2Pair is UniswapV2ERC20 {
     using SafeMathUniswap  for uint;
@@ -257,7 +277,7 @@ contract UniswapV2Pair is UniswapV2ERC20 {
     }
 
     // called once by the factory at time of deployment
-    function initialize(address _token0, address _token1) external {
+    function initialize(address _token0, address _token1, address _factory) external {
         require(msg.sender == factory, 'UniswapV2: FORBIDDEN'); // sufficient check
         token0 = _token0;
         token1 = _token1;
@@ -390,57 +410,5 @@ contract UniswapV2Pair is UniswapV2ERC20 {
     // force reserves to match balances
     function sync() external lock {
         _update(IERC20Uniswap(token0).balanceOf(address(this)), IERC20Uniswap(token1).balanceOf(address(this)), reserve0, reserve1);
-    }
-}
-
-// File: contracts\uniswapv2\UniswapV2Factory.sol
-
-
-contract UniswapV2Factory {
-    address public feeTo;
-    address public feeToSetter;
-
-    mapping(address => mapping(address => address)) public getPair;
-    address[] public allPairs;
-
-    event PairCreated(address indexed token0, address indexed token1, address pair, uint);
-
-    constructor(address _feeToSetter) public {
-        feeToSetter = _feeToSetter;
-    }
-
-    function allPairsLength() external view returns (uint) {
-        return allPairs.length;
-    }
-
-    function pairCodeHash() external pure returns (bytes32) {
-        return keccak256(type(UniswapV2Pair).creationCode);
-    }
-
-    function createPair(address tokenA, address tokenB) external returns (address pair) {
-        require(tokenA != tokenB, 'UniswapV2: IDENTICAL_ADDRESSES');
-        (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
-        require(token0 != address(0), 'UniswapV2: ZERO_ADDRESS');
-        require(getPair[token0][token1] == address(0), 'UniswapV2: PAIR_EXISTS'); // single check is sufficient
-        bytes memory bytecode = type(UniswapV2Pair).creationCode;
-        bytes32 salt = keccak256(abi.encodePacked(token0, token1));
-        assembly {
-            pair := create2(0, add(bytecode, 32), mload(bytecode), salt)
-        }
-        UniswapV2Pair(pair).initialize(token0, token1);
-        getPair[token0][token1] = pair;
-        getPair[token1][token0] = pair; // populate mapping in the reverse direction
-        allPairs.push(pair);
-        emit PairCreated(token0, token1, pair, allPairs.length);
-    }
-
-    function setFeeTo(address _feeTo) external {
-        require(msg.sender == feeToSetter, 'UniswapV2: FORBIDDEN');
-        feeTo = _feeTo;
-    }
-
-    function setFeeToSetter(address _feeToSetter) external {
-        require(msg.sender == feeToSetter, 'UniswapV2: FORBIDDEN');
-        feeToSetter = _feeToSetter;
     }
 }
