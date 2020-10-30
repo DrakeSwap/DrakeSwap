@@ -3,11 +3,11 @@
 ## Contracts
 ⚡ DuckToken - https://bscscan.com/address/0x2c62faf09810cb76215C0c3F07De6051bC83D09c
 
-⚡ DuckMaster - https://bscscan.com/address/0x8fB9CFB94D4384dd18421083498222Bb41AFaD17
+⚡ DuckMaster - https://bscscan.com/address/0xC0142487460F15204915BfbE7e9A11C1ca0305eE
 
 ⚡ SwanToken - https://bscscan.com/address/0xcE7A04a86009438BfC2BADB25028C39C15b69F02
 
-⚡ SwanMaster - https://bscscan.com/address/0x32fBaD34f83ae7f9b8559CfAe8BCa17aAE5B0655
+⚡ SwanMaster - https://bscscan.com/address/0xdf7F3909Ca0d579a74B9625D14Fe10dF5413dE86
 
 <!--
 **DrakeSwap/DrakeSwap** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
