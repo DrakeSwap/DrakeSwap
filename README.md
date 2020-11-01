@@ -1,11 +1,11 @@
 # DrakeSwap
 - Website : https://drakeswap.com/
 ## Contracts
-⚡ DuckToken - https://bscscan.com/address/0x2c62faf09810cb76215C0c3F07De6051bC83D09c
+⚡ DuckToken - https://bscscan.com/address/0xa478d908f149561e9eafbc3fa070781ed350feb9
 
 ⚡ DuckMaster - https://bscscan.com/address/0xC0142487460F15204915BfbE7e9A11C1ca0305eE
 
-⚡ SwanToken - https://bscscan.com/address/0xcE7A04a86009438BfC2BADB25028C39C15b69F02
+⚡ SwanToken - https://bscscan.com/address/0xbd7bf70bad4f435f44a7d3047810049026e2b2dc
 
 ⚡ SwanMaster - https://bscscan.com/address/0xdf7F3909Ca0d579a74B9625D14Fe10dF5413dE86
 
